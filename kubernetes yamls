@@ -1,0 +1,66 @@
+controlplane $ ls
+cloudprovider.yml      loadbalancer-service.yml  nodeport-service.yml
+clusterip-service.yml  nginx-deployment.yml
+
+====================================================
+controlplane $ cat loadbalancer-service.yml 
+kind: Service
+apiVersion: v1
+metadata:
+  name: lb-nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+ ===========================================================
+ 
+ controlplane $ cat nginx-deployment.yml 
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+    name: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+      name: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+        name: nginx
+    spec:
+      containers:
+      - image: katacoda/docker-http-server:latest
+        name: nginx
+        ports:
+        - name: http
+ ========================================================================
+ 
+ controlplane $ cat nodeport-service.yml 
+kind: Service
+apiVersion: v1
+metadata:
+  name: nodeport-nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: NodePortcontrolplane
+  
+================================================================================
+
+
+
+ 
+ 
+ 
